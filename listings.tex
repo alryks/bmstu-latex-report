@@ -1,0 +1,17 @@
+\usepackage[newfloat]{minted}
+
+% % Значения по умолчанию для minted
+\setminted{
+  frame=single,
+  fontsize=\footnotesize,
+  style=bw,
+  tabsize=4,
+  breaklines=true,
+  breakbytoken=true,
+  breaksymbolleft=\hfill,
+  breakafter=.,,
+  linenos=false,
+  autogobble=true,
+}
+
+\newenvironment{longlisting}{\captionsetup{type=lst}}{}
