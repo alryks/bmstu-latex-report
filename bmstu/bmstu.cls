@@ -23,25 +23,19 @@
 \LoadClass[a4paper,oneside,14pt]{extreport}
 
 % Настройка кодировки и языков
-\RequirePackage{ifxetex}
-\RequirePackage{ifluatex}
+\RequirePackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Times New Roman}
+\setmonofont{Courier New}
 
-\ifthenelse{\boolean{xetex} \OR \boolean{luatex}}{%
-	\RequirePackage{fontspec}
-	\setmainfont{Times New Roman}
-	\setsansfont{Times New Roman}
-	\setmonofont{Courier New}
+\RequirePackage{unicode-math}
+\setmathfont{XITS Math}
 
-	\RequirePackage{unicode-math}
-	\setmathfont{Cambria Math}
-}{%
-	% pdflatex
-	\RequirePackage{cmap}
-	\RequirePackage[T2A]{fontenc}
-	\RequirePackage[utf8]{inputenc}
-	\RequirePackage{amsmath}
-	\RequirePackage{amssymb}
-}%
+% \RequirePackage{cmap}
+% \RequirePackage[T2A]{fontenc}
+% \RequirePackage[utf8]{inputenc}
+% \RequirePackage{amsmath}
+% \RequirePackage{amssymb}
 
 \RequirePackage[english,main=russian]{babel}
 \RequirePackage{fix-cm}
@@ -74,7 +68,7 @@
 \makeatother
 \RequirePackage{titlesec}
 \titleformat{\chapter}[block]{\hspace{\parindent}\bfseries}{\thechapter}{0.5em}{\bfseries\raggedright}
-\titleformat{name=\chapter,numberless}[block]{\hspace{\parindent}}{}{0pt}{\bfseries\centering}
+\titleformat{name=\chapter,numberless}[block]{}{}{0pt}{\bfseries\centering}
 \titleformat{\section}[block]{\hspace{\parindent}\bfseries}{\thesection}{0.5em}{\bfseries\raggedright}
 \titleformat{\subsection}[block]{\hspace{\parindent}\bfseries}{\thesubsection}{0.5em}{\bfseries\raggedright}
 \titleformat{\subsubsection}[block]{\hspace{\parindent}\bfseries}{\thesubsubsection}{0.5em}{\bfseries\raggedright}
