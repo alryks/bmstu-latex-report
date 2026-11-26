@@ -1,0 +1,115 @@
+%% bmstu_figure.sty
+%% Copyright 2023 Mikael Novikov
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Mikael Novikov.
+%
+% This work consists of all files listed in manifest.txt.
+
+% Подключения пакетов фигур
+\RequirePackage{graphicx}
+\RequirePackage{float}
+\RequirePackage{wrapfig}
+\RequirePackage{tikzscale}
+
+% Подключения пакета графиков
+\RequirePackage{pgfplots}
+\usetikzlibrary{patterns}
+\pgfplotscreateplotcyclelist{bmstu monochrome bars}{%
+	draw=black,pattern=north east lines,pattern color=black\\%
+	draw=black,pattern=dots,pattern color=black\\%
+	draw=black,pattern=crosshatch,pattern color=black\\%
+	draw=black,fill=black!30\\%
+}
+\pgfplotsset{
+	compat=newest,
+	cycle list name=black white,
+	colormap/blackwhite,
+	bmstu bars/.style={ybar,cycle list name=bmstu monochrome bars},
+}
+
+% Команда создания рисунка
+\newcommand{\includeimage}[5]
+{
+	\ifthenelse{\equal{#2}{f}}
+	{
+		\begin{figure}[#3]
+			\center{\includegraphics[width=#4]{inc/img/#1}}
+			\caption{#5}
+			\label{img:#1}
+		\end{figure}
+	}
+	{
+		\ifthenelse{\equal{#2}{w}}
+		{
+			\begin{wrapfigure}{#3}{#4}
+				\centering
+				\includegraphics[width=\linewidth]{inc/img/#1}
+				\caption{#5}
+				\label{img:#1}
+			\end{wrapfigure}
+		}
+		{
+			\PackageError{bmstu}{unknown image type}{}	
+		}
+	}
+}
+
+% \includeimages{{первый,второй},{третий}}{Подпись}{имя метки}
+% Каждая группа задаёт один ряд изображений из inc/img/.
+\ExplSyntaxOn
+\int_new:N \l__bmstu_image_panel_int
+\int_new:N \l__bmstu_image_column_int
+\dim_new:N \l__bmstu_image_width_dim
+\dim_new:N \l__bmstu_image_height_dim
+
+\cs_new_protected:Npn \__bmstu_image_row:n #1
+  {
+    \int_compare:nNnT { \clist_count:n {#1} } > {0}
+      {
+        \int_zero:N \l__bmstu_image_column_int
+        \dim_set:Nn \l__bmstu_image_width_dim
+          { 0.98\linewidth / \clist_count:n {#1} - 0.02\linewidth }
+        \noindent
+        \clist_map_inline:nn {#1}
+          {
+            \int_incr:N \l__bmstu_image_panel_int
+            \int_incr:N \l__bmstu_image_column_int
+            \int_compare:nNnT { \l__bmstu_image_column_int } > {1}
+              { \hspace{0.02\linewidth} }
+            \begin{minipage}[b]{\l__bmstu_image_width_dim}
+              \centering
+              \includegraphics[
+                width=\linewidth,height=\l__bmstu_image_height_dim,keepaspectratio
+              ]{inc/img/##1}\par
+              \int_compare:nNnTF { \l__bmstu_image_panel_int } > {28}
+                { \int_use:N \l__bmstu_image_panel_int }
+                { \russian@alph { \int_use:N \l__bmstu_image_panel_int } })
+            \end{minipage}
+          }
+        \par\smallskip
+      }
+  }
+
+\NewDocumentCommand{\includeimages}{mmm}
+  {
+    \begin{figure}[htbp]
+      \centering
+      \int_zero:N \l__bmstu_image_panel_int
+      \dim_set:Nn \l__bmstu_image_height_dim
+        { \dim_min:nn {0.20\textheight} {0.48\textheight / \clist_count:n {#1}} }
+      \clist_map_function:nN {#1} \__bmstu_image_row:n
+      \caption{#2}
+      \label{img:#3}
+    \end{figure}
+  }
+\ExplSyntaxOff
