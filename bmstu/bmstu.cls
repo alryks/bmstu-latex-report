@@ -31,6 +31,9 @@
 \RequirePackage{unicode-math}
 \setmathfont{XITS Math}
 
+% Сквозная нумерация формул по всему документу.
+\counterwithout{equation}{chapter}
+
 % \RequirePackage{cmap}
 % \RequirePackage[T2A]{fontenc}
 % \RequirePackage[utf8]{inputenc}
@@ -61,7 +64,9 @@
 
 % Настройка абзацного отступа
 \RequirePackage{indentfirst}
-\setlength{\parindent}{12.5mm}
+\newlength{\bmstuparagraphindent}
+\setlength{\bmstuparagraphindent}{12.5mm}
+\setlength{\parindent}{\bmstuparagraphindent}
 
 % Настройка заголовков
 \makeatletter
@@ -70,15 +75,36 @@
 \renewcommand\large{\@setfontsize\large{16pt}{20}}
 \makeatother
 \RequirePackage{titlesec}
-\titleformat{\chapter}[block]{\hspace{\parindent}\bfseries}{\thechapter}{0.5em}{\bfseries\raggedright}
-\titleformat{name=\chapter,numberless}[block]{}{}{0pt}{\bfseries\centering}
-\titleformat{\section}[block]{\hspace{\parindent}\bfseries}{\thesection}{0.5em}{\bfseries\raggedright}
-\titleformat{\subsection}[block]{\hspace{\parindent}\bfseries}{\thesubsection}{0.5em}{\bfseries\raggedright}
-\titleformat{\subsubsection}[block]{\hspace{\parindent}\bfseries}{\thesubsubsection}{0.5em}{\bfseries\raggedright}
-\titlespacing{\chapter}{12.5mm}{-22pt}{10pt}
-\titlespacing{\section}{12.5mm}{10pt}{10pt}
-\titlespacing{\subsection}{12.5mm}{10pt}{10pt}
-\titlespacing{\subsubsection}{12.5mm}{10pt}{10pt}
+
+% Для заголовков разрешён перенос строки только между словами.
+\newcommand{\bmstuheadingformat}{%
+    \bfseries
+    \hyphenpenalty=10000\relax
+    \exhyphenpenalty=10000\relax
+}
+\titleformat{\chapter}[block]{\bmstuheadingformat}
+    {\hspace*{\bmstuparagraphindent}\thechapter}{0.5em}{}
+\titleformat{name=\chapter,numberless}[block]{\bmstuheadingformat\centering}
+    {}{0pt}{}
+\titleformat{\section}[block]{\bmstuheadingformat}
+    {\hspace*{\bmstuparagraphindent}\thesection}{0.5em}{}
+\titleformat{\subsection}[block]{\bmstuheadingformat}
+    {\hspace*{\bmstuparagraphindent}\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}[block]{\bmstuheadingformat}
+    {\hspace*{\bmstuparagraphindent}\thesubsubsection}{0.5em}{}
+
+% titlesec добавляет этот отступ к обычному расстоянию между строками.
+% По схеме МГТУ расстояние до текста составляет около двух шагов строки.
+\titlespacing{\chapter}{0pt}{-22pt}{\baselineskip}
+\titlespacing{\section}{0pt}{\baselineskip}{\baselineskip}
+\titlespacing{\subsection}{0pt}{\baselineskip}{\baselineskip}
+\titlespacing{\subsubsection}{0pt}{\baselineskip}{\baselineskip}
+
+% Между соседними заголовками на схеме около 1,6 шага строки.
+% titlesec вызывает этот макрос после уже добавленного отступа.
+\makeatletter
+\renewcommand{\ttl@titlespace}[1]{\vskip-.4\baselineskip\relax}
+\makeatother
 
 \RequirePackage{titletoc}
 \titlecontents{chapter}[0pt]{}{\thecontentslabel\hspace{10pt}}{}{\titlerule*[0.5em]{.}\contentspage}
