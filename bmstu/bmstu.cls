@@ -179,6 +179,7 @@
 \AddEnumerateCounter{\asbuk}{\@asbuk}{малая русская}
 \setlist[enumerate]{label=\arabic*)}
 \setlist[enumerate,2]{label=\asbuk*)}
+\setlist[itemize,enumerate,1]{labelindent=\bmstuparagraphindent,leftmargin=*}
 
 
 
