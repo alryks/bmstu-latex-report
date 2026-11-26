@@ -64,6 +64,32 @@
 	}
 }
 
+% \includetexfigure{имя файла}{режим f/w}{позиция}{ширина}{подпись}[метка]
+\NewDocumentCommand{\includetexfigure}{mmmmmo}{%
+	\ifthenelse{\equal{#2}{f}}{%
+		\begin{figure}[#3]
+			\centering
+			\begin{minipage}{#4}
+				\centering
+				\input{inc/img/#1.tex}%
+			\end{minipage}
+			\caption{#5}%
+			\IfValueTF{#6}{\label{#6}}{\label{img:#1}}%
+		\end{figure}%
+	}{%
+		\ifthenelse{\equal{#2}{w}}{%
+			\begin{wrapfigure}{#3}{#4}
+				\centering
+				\input{inc/img/#1.tex}%
+				\caption{#5}%
+				\IfValueTF{#6}{\label{#6}}{\label{img:#1}}%
+			\end{wrapfigure}%
+		}{%
+			\PackageError{bmstu}{unknown TeX figure type}{Use f or w.}%
+		}%
+	}%
+}
+
 % \includeimages{{первый,второй},{третий}}{Подпись}{имя метки}
 % Каждая группа задаёт один ряд изображений из inc/img/.
 \ExplSyntaxOn
