@@ -16,8 +16,6 @@
 % This work consists of all files listed in manifest.txt.
 
 % Создание списка использованных источников
-\newcommand{\makebibliography}
-{
-	\printbibliography[title=СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ]
-	\addcontentsline{toc}{chapter}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}
+\newcommand{\makebibliography}{%
+    \printbibliography[heading=bibintoc,title={СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}]%
 }
