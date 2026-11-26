@@ -16,17 +16,19 @@
 Сборка отчёта из корня репозитория:
 
 ```sh
-TEXINPUTS=bmstu: latexmk -lualatex -interaction=nonstopmode -halt-on-error report.tex
+TEXINPUTS=.:./bmstu: latexmk -lualatex -shell-escape -auxdir=build \
+  -interaction=nonstopmode -file-line-error report.tex
 ```
 
 Сборка гайда:
 
 ```sh
 cd bmstu/examples
-TEXINPUTS=..: latexmk -lualatex -interaction=nonstopmode -halt-on-error bmstu-examples.tex
+TEXINPUTS=.:..: latexmk -lualatex -shell-escape -auxdir=build \
+  -interaction=nonstopmode -file-line-error bmstu-examples.tex
 ```
 
-`latexmk` запускает Biber и повторяет проходы LuaLaTeX по мере необходимости.
+`latexmk` запускает Biber и повторяет проходы LuaLaTeX по мере необходимости. Промежуточные файлы попадают в `build/`, а PDF сохраняется рядом с исходником. Команды используют обычный `PATH`.
 
 ## Что есть в гайде
 
